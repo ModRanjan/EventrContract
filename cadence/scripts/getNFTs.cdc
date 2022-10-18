@@ -1,7 +1,7 @@
 import ERC721 from 0x02
 import NonFungibleToken from 0x01
-pub fun main(account: Address): [&ERC721.NFT?] {
-  let collection = getAccount(account).getCapability(/public/MyNFTCollection)
+pub fun main(account:Address,_collectionPath:PublicPath): [&ERC721.NFT?] {
+  let collection = getAccount(account).getCapability(_collectionPath)
                     .borrow<&ERC721.Collection{NonFungibleToken.CollectionPublic, ERC721.CollectionPublic}>()
                     ?? panic("Can't get the User's collection.")
   let returnVals: [&ERC721.NFT?] = []
@@ -12,4 +12,5 @@ pub fun main(account: Address): [&ERC721.NFT?] {
   }
   log(returnVals)
   return returnVals
-}
+
+  }
