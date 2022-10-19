@@ -1,4 +1,4 @@
-import ERC721 from 0x02
+import Eventr from 0x02
 import NonFungibleToken from 0x01
 import FungibleToken from 0x03
 import FlowToken from 0x04
@@ -13,11 +13,11 @@ import FlowToken from 0x04
 transaction (_storagePath:StoragePath,_publicPath:CapabilityPath,_privatePath:PrivatePath){
 
   prepare(acct: AuthAccount) {
-    acct.save(<- ERC721.createEmptyCollection(), to: _storagePath)
-    acct.link<&ERC721.Collection{ERC721.CollectionPublic, NonFungibleToken.CollectionPublic}>(_publicPath, target: _storagePath)
-    acct.link<&ERC721.Collection>(_privatePath, target: _storagePath)
+    acct.save(<- Eventr.createEmptyCollection(), to: _storagePath)
+    acct.link<&Eventr.Collection{Eventr.CollectionPublic, NonFungibleToken.CollectionPublic}>(_publicPath, target: _storagePath)
+    acct.link<&Eventr.Collection>(_privatePath, target: _storagePath)
     
-    let MyNFTCollection = acct.getCapability<&ERC721.Collection>(_privatePath)    
+    let MyNFTCollection = acct.getCapability<&Eventr.Collection>(_privatePath)    
   }
 
   execute {
