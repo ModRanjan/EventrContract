@@ -13,7 +13,7 @@ import Eventr from 0x02
                           .borrow<&Eventr.MintNFT{Eventr.MintNFTPublic}>()
                           ?? panic("Could not borrow the user's NFTMinter")
         let _flowTokenVault = getAccount(_recipientAddress).getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
-        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/Vault)!.withdraw(amount: _price) as! @FlowToken.Vault
+        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: _price) as! @FlowToken.Vault
         nftMinter.mint(_ipfsHash: _ipfsHash, _name: _name, _price: _price,_payment: <-payment, _collection: collection,_flowTokenVault:_flowTokenVault)
       }
       execute{

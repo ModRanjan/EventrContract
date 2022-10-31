@@ -1,10 +1,10 @@
-import ERC721 from 0x02
+import Eventr from 0x02
 import NonFungibleToken from 0x01
-pub fun main(account:Address,_collectionPath:PublicPath): [&ERC721.NFT?] {
+pub fun main(account:Address,_collectionPath:PublicPath): [&Eventr.NFT?] {
   let collection = getAccount(account).getCapability(_collectionPath)
-                    .borrow<&ERC721.Collection{NonFungibleToken.CollectionPublic, ERC721.CollectionPublic}>()
+                    .borrow<&Eventr.Collection{NonFungibleToken.CollectionPublic, Eventr.CollectionPublic}>()
                     ?? panic("Can't get the User's collection.")
-  let returnVals: [&ERC721.NFT?] = []
+  let returnVals: [&Eventr.NFT?] = []
   let ids = collection.getIDs()
   
   for id in ids {

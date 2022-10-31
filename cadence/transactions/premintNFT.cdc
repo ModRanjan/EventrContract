@@ -1,6 +1,4 @@
-import FungibleToken from 0x03
-import FlowToken from 0x04
-import Eventr from 0x02
+import Eventr from 0xf8d6e0586b0a20c7
 
 transaction(_ipfsHash:String,_name:String,_collectionPath:StoragePath){
     prepare(signer: AuthAccount){
@@ -13,6 +11,7 @@ transaction(_ipfsHash:String,_name:String,_collectionPath:StoragePath){
                         .borrow<&Eventr.MintNFT{Eventr.MintNFTPublic}>()
                         ?? panic("Could not borrow the user's NFTMinter")
 
+        
         nftMinter.premint(_ipfsHash: _ipfsHash, _name: _name,_collection: collection)
     }
     execute{
