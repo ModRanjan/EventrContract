@@ -1,9 +1,9 @@
 // NFT standard contract for flow blockchain
-import NonFungibleToken from 0x01
+import NonFungibleToken from 0xc2bf854ac7c824f6
 // ERC20 type standard contract for flow blockchain
-import FungibleToken from 0x03
+import FungibleToken from 0x9a0766d93b6608b7
 // implementation of FungibleToken standards
-import FlowToken from 0x04
+import FlowToken from 0x7e60df042a9c0868
 
 // implementation of NFT smart contract according to our requirements
 pub contract Eventr:NonFungibleToken {
@@ -181,3 +181,4 @@ pub contract Eventr:NonFungibleToken {
       self.totalSupply=0;
     }
 }
+ 
