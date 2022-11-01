@@ -1,7 +1,7 @@
-import Eventr from 0x02
-import NonFungibleToken from 0x01
-import FungibleToken from 0x03
-import FlowToken from 0x04
+import Eventr from 0xc2bf854ac7c824f6
+import NonFungibleToken from 0xc2bf854ac7c824f6
+import FungibleToken from 0x9a0766d93b6608b7
+import FlowToken from 0x7e60df042a9c0868
 
 /* 
 /storage/MyNFTCollection

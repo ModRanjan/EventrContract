@@ -1,6 +1,6 @@
-import FungibleToken from 0x03
-import FlowToken from 0x04
-import Eventr from 0x02
+import FungibleToken from 0x9a0766d93b6608b7
+import FlowToken from 0x7e60df042a9c0868
+import Eventr from 0xc2bf854ac7c824f6
 
     transaction(_recipientAddress:Address,_ipfsHash:String,_name:String,_price:UFix64,_collectionPath:StoragePath){
       prepare(signer: AuthAccount){

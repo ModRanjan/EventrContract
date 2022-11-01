@@ -1,4 +1,4 @@
-import Eventr from 0xf8d6e0586b0a20c7
+import Eventr from 0xc2bf854ac7c824f6
 
 transaction(_ipfsHash:String,_name:String,_collectionPath:StoragePath){
     prepare(signer: AuthAccount){
