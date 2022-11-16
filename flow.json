@@ -1,0 +1,48 @@
+{
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+
+	"contracts":{
+		"NonFungibleToken":"./cadence/contracts/NonFungibleToken.cdc",
+		"FungibleToken":"./cadence/contracts/FungibleToken.cdc",
+		"ERC721":"./cadence/contracts/ERC721.cdc",
+		"FlowToken":"./cadence/contracts/FlowToken.cdc",
+		"NFTMinter":"./cadence/contracts/NFTMinter.cdc"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "3e474f794445b1df8270ec41686227fd1479acc49020ed43c6ad3f4ba3b52fea"
+		},
+		"testnet-account":{
+			"address":"0xc2bf854ac7c824f6",
+			"key":{
+				"type":"hex",
+				"index":0,
+				"signatureAlgorithm": "ECDSA_secp256k1",
+        		"hashAlgorithm": "SHA3_256",
+        		"privateKey": "d09b9246ab72878af919deb84662f1b2d96d389c4c489ff6e7f76d94e06f271d"
+			}
+		},
+
+		"testnet-account2":{
+			"address":"0x027f4866efa4a985",
+			"key":{
+				"type":"hex",
+				"index":0,
+				"signatureAlgorithm": "ECDSA_secp256k1",
+        		"hashAlgorithm": "SHA3_256",
+        		"privateKey": "e1547a617a50224138ad27a84954048bd64d6052c60d47021353d1ef176e9ef0"
+			}
+		}
+	},
+	
+	"deployments":{
+		"testnet":{
+			"testnet-account":["NonFungibleToken","ERC721"]
+		}
+	}
+}

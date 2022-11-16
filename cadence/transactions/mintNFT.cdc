@@ -1,6 +1,6 @@
-import FungibleToken from 0x03
-import FlowToken from 0x04
-import Eventr from 0x02
+import FungibleToken from 0x9a0766d93b6608b7
+import FlowToken from 0x7e60df042a9c0868
+import Eventr from 0xc2bf854ac7c824f6
 
     transaction(_recipientAddress:Address,_ipfsHash:String,_name:String,_price:UFix64,_collectionPath:StoragePath){
       prepare(signer: AuthAccount){
@@ -13,7 +13,7 @@ import Eventr from 0x02
                           .borrow<&Eventr.MintNFT{Eventr.MintNFTPublic}>()
                           ?? panic("Could not borrow the user's NFTMinter")
         let _flowTokenVault = getAccount(_recipientAddress).getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
-        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/Vault)!.withdraw(amount: _price) as! @FlowToken.Vault
+        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: _price) as! @FlowToken.Vault
         nftMinter.mint(_ipfsHash: _ipfsHash, _name: _name, _price: _price,_payment: <-payment, _collection: collection,_flowTokenVault:_flowTokenVault)
       }
       execute{
