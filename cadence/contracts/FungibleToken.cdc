@@ -1,42 +1,42 @@
 /**
 
-# The Flow Fungible Token standard
+    # The Flow Fungible Token standard
 
-## `FungibleToken` contract interface
+    ## `FungibleToken` contract interface
 
-The interface that all Fungible Token contracts would have to conform to.
-If a users wants to deploy a new token contract, their contract
-would need to implement the FungibleToken interface.
+    The interface that all Fungible Token contracts would have to conform to.
+    If a users wants to deploy a new token contract, their contract
+    would need to implement the FungibleToken interface.
 
-Their contract would have to follow all the rules and naming
-that the interface specifies.
+    Their contract would have to follow all the rules and naming
+    that the interface specifies.
 
-## `Vault` resource
+    ## `Vault` resource
 
-Each account that owns tokens would need to have an instance
-of the Vault resource stored in their account storage.
+    Each account that owns tokens would need to have an instance
+    of the Vault resource stored in their account storage.
 
-The Vault resource has methods that the owner and other users can call.
+    The Vault resource has methods that the owner and other users can call.
 
-## `Provider`, `Receiver`, and `Balance` resource interfaces
+    ## `Provider`, `Receiver`, and `Balance` resource interfaces
 
-These interfaces declare pre-conditions and post-conditions that restrict
-the execution of the functions in the Vault.
+    These interfaces declare pre-conditions and post-conditions that restrict
+    the execution of the functions in the Vault.
 
-They are separate because it gives the user the ability to share
-a reference to their Vault that only exposes the fields functions
-in one or more of the interfaces.
+    They are separate because it gives the user the ability to share
+    a reference to their Vault that only exposes the fields functions
+    in one or more of the interfaces.
 
-It also gives users the ability to make custom resources that implement
-these interfaces to do various things with the tokens.
-For example, a faucet can be implemented by conforming
-to the Provider interface.
+    It also gives users the ability to make custom resources that implement
+    these interfaces to do various things with the tokens.
+    For example, a faucet can be implemented by conforming
+    to the Provider interface.
 
-By using resources and interfaces, users of Fungible Token contracts
-can send and receive tokens peer-to-peer, without having to interact
-with a central ledger smart contract. To send tokens to another user,
-a user would simply withdraw the tokens from their Vault, then call
-the deposit function on another user's Vault to complete the transfer.
+    By using resources and interfaces, users of Fungible Token contracts
+    can send and receive tokens peer-to-peer, without having to interact
+    with a central ledger smart contract. To send tokens to another user,
+    a user would simply withdraw the tokens from their Vault, then call
+    the deposit function on another user's Vault to complete the transfer.
 
 */
 
@@ -52,20 +52,14 @@ pub contract interface FungibleToken {
     ///
     pub var totalSupply: UFix64
 
-    /// TokensInitialized
-    ///
     /// The event that is emitted when the contract is created
     ///
     pub event TokensInitialized(initialSupply: UFix64)
 
-    /// TokensWithdrawn
-    ///
     /// The event that is emitted when tokens are withdrawn from a Vault
     ///
     pub event TokensWithdrawn(amount: UFix64, from: Address?)
 
-    /// TokensDeposited
-    ///
     /// The event that is emitted when tokens are deposited into a Vault
     ///
     pub event TokensDeposited(amount: UFix64, to: Address?)
@@ -81,7 +75,7 @@ pub contract interface FungibleToken {
     ///
     pub resource interface Provider {
 
-        /// withdraw subtracts tokens from the owner's Vault
+        /// Subtracts tokens from the owner's Vault
         /// and returns a Vault with the removed tokens.
         ///
         /// The function's access level is public, but this is not a problem
@@ -96,6 +90,9 @@ pub contract interface FungibleToken {
         /// capability that allows all users to access the provider
         /// resource through a reference.
         ///
+        /// @param amount: The amount of tokens to be withdrawn from the vault
+        /// @return The Vault resource containing the withdrawn funds
+        /// 
         pub fun withdraw(amount: UFix64): @Vault {
             post {
                 // `result` refers to the return value
@@ -117,7 +114,9 @@ pub contract interface FungibleToken {
     ///
     pub resource interface Receiver {
 
-        /// deposit takes a Vault and deposits it into the implementing resource type
+        /// Takes a Vault and deposits it into the implementing resource type
+        ///
+        /// @param from: The Vault resource containing the funds that will be deposited
         ///
         pub fun deposit(from: @Vault)
     }
@@ -140,30 +139,47 @@ pub contract interface FungibleToken {
                     "Balance must be initialized to the initial balance"
             }
         }
+
+        /// Function that returns all the Metadata Views implemented by a Fungible Token
+        ///
+        /// @return An array of Types defining the implemented views. This value will be used by
+        ///         developers to know which parameter to pass to the resolveView() method.
+        ///
+        pub fun getViews(): [Type] {
+            return []
+        }
+
+        /// Function that resolves a metadata view for this fungible token by type.
+        ///
+        /// @param view: The Type of the desired view.
+        /// @return A structure representing the requested view.
+        ///
+        pub fun resolveView(_ view: Type): AnyStruct? {
+            return nil
+        }
     }
 
-    /// Vault
-    ///
     /// The resource that contains the functions to send and receive tokens.
+    /// The declaration of a concrete type in a contract interface means that
+    /// every Fungible Token contract that implements the FungibleToken interface
+    /// must define a concrete `Vault` resource that conforms to the `Provider`, `Receiver`,
+    /// and `Balance` interfaces, and declares their required fields and functions
     ///
     pub resource Vault: Provider, Receiver, Balance {
 
-        // The declaration of a concrete type in a contract interface means that
-        // every Fungible Token contract that implements the FungibleToken interface
-        // must define a concrete `Vault` resource that conforms to the `Provider`, `Receiver`,
-        // and `Balance` interfaces, and declares their required fields and functions
-
         /// The total balance of the vault
-        ///
         pub var balance: UFix64
 
         // The conforming type must declare an initializer
-        // that allows prioviding the initial balance of the Vault
+        // that allows providing the initial balance of the Vault
         //
         init(balance: UFix64)
 
-        /// withdraw subtracts `amount` from the Vault's balance
+        /// Subtracts `amount` from the Vault's balance
         /// and returns a new Vault with the subtracted balance
+        ///
+        /// @param amount: The amount of tokens to be withdrawn from the vault
+        /// @return The Vault resource containing the withdrawn funds
         ///
         pub fun withdraw(amount: UFix64): @Vault {
             pre {
@@ -179,7 +195,9 @@ pub contract interface FungibleToken {
             }
         }
 
-        /// deposit takes a Vault and adds its balance to the balance of this Vault
+        /// Takes a Vault and deposits it into the implementing resource type
+        ///
+        /// @param from: The Vault resource containing the funds that will be deposited
         ///
         pub fun deposit(from: @Vault) {
             // Assert that the concrete type of the deposited vault is the same
@@ -195,7 +213,9 @@ pub contract interface FungibleToken {
         }
     }
 
-    /// createEmptyVault allows any user to create a new Vault that has a zero balance
+    /// Allows any user to create a new Vault that has a zero balance
+    ///
+    /// @return The new Vault resource
     ///
     pub fun createEmptyVault(): @Vault {
         post {
