@@ -48,3 +48,6 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Personal files
+playground/
+accounts.json
